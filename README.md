@@ -6,8 +6,11 @@ Workflow Summary:
 1. Data Loading
 Loads ECG signals and annotations from all 48 patients in the MIT-BIH Arrhythmia Database using wfdb.
 Combines 2 minutes of ECG samples from each patient into a single array for uniform preprocessing.
+To fetch the data automatically from physionet, do:
+import wfdb
+wfdb.dl_database('mitdb', dl_dir='data/mitbih')
 
-2. Noise Augmentation
+3. Noise Augmentation
 Four types of synthetic noise are added to improve model robustness:
 Gaussian noise
 Baseline drift
@@ -15,7 +18,7 @@ Powerline interference
 Motion artifact spikes
 A random noise augmentation function applies these during training to simulate realistic ECG distortions.
 
-3. R-Peak Detection
+4. R-Peak Detection
 R-peaks are detected using the scipy.signal.find_peaks method.
 For each detected beat, the closest annotation sample from the .atr file is matched using:
 closest_ann_idx = min(range(len(ann.sample)), key=lambda j: abs(ann.sample[j] - beat_idx))
